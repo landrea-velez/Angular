@@ -1,3 +1,11 @@
+<router-outlet></router-outlet>
+
+<div class="example-header">
+    <mat-form-field>
+        <input matInput (keyup)="filtrar($event)" placeholder="Buscar paciente">
+    </mat-form-field>
+</div>
+
 <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
     <ng-container matColumnDef="idPaciente">
@@ -21,7 +29,7 @@
             <button mat-button color="primary" [routerLink]="['edicion', element.idPaciente]">
                 <mat-icon>ballot</mat-icon>
             </button>
-            <button mat-button color="primary" (click)="eliminar(element.idPaciente)">
+            <button mat-button color="primary" >
                 <mat-icon>delete</mat-icon>
             </button>
         </td>
@@ -31,3 +39,9 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
 </table>
+
+<mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+
+<button mat-fab color="accent" style="float: right" routerLink="/pages/paciente/nuevo" >
+    <mat-icon>add</mat-icon>
+</button>

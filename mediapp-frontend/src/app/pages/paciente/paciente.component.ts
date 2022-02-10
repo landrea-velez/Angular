@@ -1,6 +1,10 @@
-import { Paciente } from './../../_model/paciente';
-import { PacienteService } from './../../_service/paciente.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { Paciente } from 'src/app/_model/paciente';
+import { PacienteService } from 'src/app/_service/paciente.service';
 
 @Component({
   selector: 'app-paciente',
@@ -9,16 +13,43 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PacienteComponent implements OnInit {
 
-  pacientes: Paciente[];
+  dataSource: MatTableDataSource<Paciente>;
+  displayedColumns: string[] = ['idPaciente', 'nombres', 'apellidos', 'acciones'];
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(
-    private pacienteService: PacienteService
+    private pacienteService: PacienteService,
+    private snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
-    this.pacienteService.listar().subscribe(data => {
-      this.pacientes = data;
+
+    /*this.pacienteService.pacienteCambio.subscribe(data => {
+      this.dataSource = new MatTableDataSource(data);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
     });
+
+    this.pacienteService.mensajeCambio.subscribe(data => {
+      this.snackBar.open(data, 'AVISO', { duration: 2000 });
+    });*/
+
+    this.pacienteService.listar().subscribe(data => {
+      this.dataSource = new MatTableDataSource(data);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    });
+
+
+  }
+
+  filtrar(e: any) {
+    this.dataSource.filter = e.target.value.trim().toLowerCase();
+    /*this.dataSource.filterPredicate = (data: Paciente, filter: string) => {
+      return data.nombres.toLowerCase().includes(filter) || data.apellidos.toLowerCase().includes(filter);
+    }})*/
   }
 
 }
