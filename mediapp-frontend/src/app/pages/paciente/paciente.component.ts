@@ -26,7 +26,7 @@ export class PacienteComponent implements OnInit {
 
   ngOnInit(): void {
 
-    /*this.pacienteService.pacienteCambio.subscribe(data => {
+    this.pacienteService.pacienteCambio.subscribe(data => {
       this.dataSource = new MatTableDataSource(data);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -34,7 +34,7 @@ export class PacienteComponent implements OnInit {
 
     this.pacienteService.mensajeCambio.subscribe(data => {
       this.snackBar.open(data, 'AVISO', { duration: 2000 });
-    });*/
+    });
 
     this.pacienteService.listar().subscribe(data => {
       this.dataSource = new MatTableDataSource(data);
@@ -51,5 +51,7 @@ export class PacienteComponent implements OnInit {
       return data.nombres.toLowerCase().includes(filter) || data.apellidos.toLowerCase().includes(filter);
     }})*/
   }
+
+
 
 }
