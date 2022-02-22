@@ -9,14 +9,26 @@ import { PacienteComponent } from './pages/paciente/paciente.component';
 import { MedicoComponent } from './pages/medico/medico.component';
 import { HttpClientModule } from '@angular/common/http';
 import { PacienteEdicionComponent } from './pages/paciente/paciente-edicion/paciente-edicion.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MedicoDialogoComponent } from './pages/medico/medico-dialogo/medico-dialogo.component';
+import { ExamenComponent } from './pages/examen/examen.component';
+import { ExamenEdicionComponent } from './pages/examen/examen-edicion/examen-edicion.component';
+import { EspecialidadComponent } from './pages/especialidad/especialidad.component';
+import { EspecialidadEdicionComponent } from './pages/especialidad/especialidad-edicion/especialidad-edicion.component';
+import { ConsultaComponent } from './pages/consulta/consulta.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     PacienteComponent,
     MedicoComponent,
-    PacienteEdicionComponent
+    PacienteEdicionComponent,
+    MedicoDialogoComponent,
+    ExamenComponent,
+    ExamenEdicionComponent,
+    EspecialidadComponent,
+    EspecialidadEdicionComponent,
+    ConsultaComponent
   ],
   imports: [
     BrowserModule,
@@ -24,7 +36,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     BrowserAnimationsModule,
     MaterialModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule, //Formularios
+    FormsModule //Two Way Binding
   ],
   providers: [],
   bootstrap: [AppComponent]

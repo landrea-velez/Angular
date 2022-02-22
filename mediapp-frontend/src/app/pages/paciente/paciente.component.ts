@@ -19,6 +19,8 @@ export class PacienteComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
+  //estado: boolean = false;
+
   constructor(
     private pacienteService: PacienteService,
     private snackBar: MatSnackBar
@@ -26,13 +28,13 @@ export class PacienteComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.pacienteService.pacienteCambio.subscribe(data => {
+    this.pacienteService.getPacienteCambio().subscribe(data => {
       this.dataSource = new MatTableDataSource(data);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
 
-    this.pacienteService.mensajeCambio.subscribe(data => {
+    this.pacienteService.getMensajeCambio().subscribe(data => {
       this.snackBar.open(data, 'AVISO', { duration: 2000 });
     });
 
@@ -52,6 +54,18 @@ export class PacienteComponent implements OnInit {
     }})*/
   }
 
+  eliminar(id: number){
+    this.pacienteService.eliminar(id).subscribe(() => {
+      this.pacienteService.listar().subscribe(data => {
+        this.pacienteService.setPacienteCambio(data);
+        this.pacienteService.setMensajeCambio('SE ELIMINO');
+      });
+    });
+  }
+
+  /*cambiarEstado(){
+    return this.estado = true;
+  }*/
 
 
 }

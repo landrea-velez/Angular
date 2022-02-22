@@ -3,20 +3,27 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Paciente } from '../_model/paciente';
+import { GenericService } from './generic.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PacienteService {
+export class PacienteService extends GenericService<Paciente>{
 
-  pacienteCambio: Subject<Paciente[]> = new Subject<Paciente[]>();
-  mensajeCambio: Subject<string> = new Subject<string>();
+  private pacienteCambio: Subject<Paciente[]> = new Subject<Paciente[]>();
+  private mensajeCambio: Subject<string> = new Subject<string>();
   
-  private url: string = `${environment.HOST}/pacientes`;  
+  constructor(protected override http: HttpClient) {
+    super(
+      http,
+      `${environment.HOST}/pacientes`);
+  }
 
-  constructor(private http: HttpClient) { }
+  //private url: string = `${environment.HOST}/pacientes`;  
 
-  listar(){
+  //constructor(private http: HttpClient) { }
+
+  /*listar(){
     return this.http.get<Paciente[]>(this.url);
   }
 
@@ -34,6 +41,23 @@ export class PacienteService {
 
   eliminar(id: number){
     return this.http.delete(`${this.url}/${id}`);
+  }*/
+
+  //////get & set ////
+  getPacienteCambio(){
+    return this.pacienteCambio.asObservable();
   }
 
+  setPacienteCambio(pacientes: Paciente[]){
+    this.pacienteCambio.next(pacientes);
+  }
+
+  getMensajeCambio(){
+    return this.mensajeCambio.asObservable();
+  }
+
+  setMensajeCambio(mensaje: string){
+    this.mensajeCambio.next(mensaje);
+  }
+  
 }
