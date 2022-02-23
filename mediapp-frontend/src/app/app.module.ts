@@ -18,6 +18,7 @@ import { EspecialidadEdicionComponent } from './pages/especialidad/especialidad-
 import { ConsultaComponent } from './pages/consulta/consulta.component';
 import { ConsultaEspecialComponent } from './pages/consulta-especial/consulta-especial.component';
 import { ConsultaWizardComponent } from './pages/consulta-wizard/consulta-wizard.component';
+import { BuscarComponent } from './pages/buscar/buscar.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { ConsultaWizardComponent } from './pages/consulta-wizard/consulta-wizard
     EspecialidadEdicionComponent,
     ConsultaComponent,
     ConsultaEspecialComponent,
-    ConsultaWizardComponent
+    ConsultaWizardComponent,
+    BuscarComponent
   ],
   imports: [
     BrowserModule,

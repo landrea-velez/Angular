@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Consulta } from 'src/app/_model/consulta';
 import { DetalleConsulta } from 'src/app/_model/detalleConsulta';
 import { Especialidad } from 'src/app/_model/especialidad';
@@ -15,6 +15,7 @@ import { MedicoService } from 'src/app/_service/medico.service';
 import { PacienteService } from 'src/app/_service/paciente.service';
 import * as moment from 'moment';
 import { ConsultaListaExamenDTO } from 'src/app/dto/consultaListaExamenDTO';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-consulta-especial',
