@@ -1,5 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { BuscarComponent } from './pages/buscar/buscar.component';
+import { ConsultaEspecialComponent } from './pages/consulta-especial/consulta-especial.component';
+import { ConsultaWizardComponent } from './pages/consulta-wizard/consulta-wizard.component';
 import { ConsultaComponent } from './pages/consulta/consulta.component';
 import { EspecialidadEdicionComponent } from './pages/especialidad/especialidad-edicion/especialidad-edicion.component';
 import { EspecialidadComponent } from './pages/especialidad/especialidad.component';
@@ -8,6 +11,7 @@ import { ExamenComponent } from './pages/examen/examen.component';
 import { MedicoComponent } from './pages/medico/medico.component';
 import { PacienteEdicionComponent } from './pages/paciente/paciente-edicion/paciente-edicion.component';
 import { PacienteComponent } from './pages/paciente/paciente.component';
+import { ReporteComponent } from './pages/reporte/reporte.component';
 
 const routes: Routes = [
   {
@@ -29,7 +33,11 @@ const routes: Routes = [
     ]
   },
   { path: 'pages/medico', component: MedicoComponent },
-  { path: 'pages/consulta', component: ConsultaComponent }
+  { path: 'pages/consulta', component: ConsultaComponent },
+  { path: 'pages/consulta-especial', component: ConsultaEspecialComponent },
+  { path: 'pages/consulta-wizard', component: ConsultaWizardComponent },
+  { path: 'pages/buscar', component: BuscarComponent },
+  { path: 'pages/reporte', component: ReporteComponent }
 ];
 
 @NgModule({
