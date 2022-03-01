@@ -18,7 +18,10 @@ import { EspecialidadEdicionComponent } from './pages/especialidad/especialidad-
 import { ConsultaComponent } from './pages/consulta/consulta.component';
 import { ConsultaEspecialComponent } from './pages/consulta-especial/consulta-especial.component';
 import { ConsultaWizardComponent } from './pages/consulta-wizard/consulta-wizard.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { BuscarComponent } from './pages/buscar/buscar.component';
+import { BuscarDialogoComponent } from './pages/buscar/buscar-dialogo/buscar-dialogo.component';
+import { ReporteComponent } from './pages/reporte/reporte.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +37,10 @@ import { BuscarComponent } from './pages/buscar/buscar.component';
     ConsultaComponent,
     ConsultaEspecialComponent,
     ConsultaWizardComponent,
-    BuscarComponent
+    BuscarComponent,
+    BuscarDialogoComponent,
+    ReporteComponent,
+    ReporteComponent
   ],
   imports: [
     BrowserModule,
@@ -43,8 +49,8 @@ import { BuscarComponent } from './pages/buscar/buscar.component';
     MaterialModule,
     HttpClientModule,
     ReactiveFormsModule, //Formularios
-    FormsModule //Two Way Binding
-    
+    FormsModule, //Two Way Binding,
+    FlexLayoutModule
   ],
   providers: [],
   bootstrap: [AppComponent]
