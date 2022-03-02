@@ -39,4 +39,22 @@ export class ConsultaService {
   listarResumen() {
     return this.http.get<any[]>(`${this.url}/listarResumen`);
   }
+
+  //pdfs
+  generarReporte() {
+    return this.http.get(`${this.url}/generarReporte`, { responseType: 'blob' });
+  }
+
+  //archivos
+  subirArchivo(data: File) {
+    let formdata: FormData = new FormData();
+    formdata.append('adjunto', data);
+    return this.http.post(`${this.url}/guardarArchivo`, formdata);
+  }
+
+  leerArchivo(id: number) {
+    return this.http.get(`${this.url}/leerArchivo/${id}`, {
+      responseType: 'blob'
+    });
+  }
 }
