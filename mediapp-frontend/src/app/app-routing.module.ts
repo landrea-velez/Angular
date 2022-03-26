@@ -1,43 +1,20 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { BuscarComponent } from './pages/buscar/buscar.component';
-import { ConsultaEspecialComponent } from './pages/consulta-especial/consulta-especial.component';
-import { ConsultaWizardComponent } from './pages/consulta-wizard/consulta-wizard.component';
-import { ConsultaComponent } from './pages/consulta/consulta.component';
-import { EspecialidadEdicionComponent } from './pages/especialidad/especialidad-edicion/especialidad-edicion.component';
-import { EspecialidadComponent } from './pages/especialidad/especialidad.component';
-import { ExamenEdicionComponent } from './pages/examen/examen-edicion/examen-edicion.component';
-import { ExamenComponent } from './pages/examen/examen.component';
-import { MedicoComponent } from './pages/medico/medico.component';
-import { PacienteEdicionComponent } from './pages/paciente/paciente-edicion/paciente-edicion.component';
-import { PacienteComponent } from './pages/paciente/paciente.component';
-import { ReporteComponent } from './pages/reporte/reporte.component';
+import { LayoutComponent } from './pages/layout/layout.component';
+import { LoginComponent } from './pages/login/login.component';
+import { Not404Component } from './pages/not404/not404.component';
 
 const routes: Routes = [
+  { path: 'login', component: LoginComponent },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
   {
-    path: 'pages/paciente', component: PacienteComponent, children: [
-      { path: 'nuevo', component: PacienteEdicionComponent },
-      { path: 'edicion/:id', component: PacienteEdicionComponent }      
-    ]
+    path: 'pages',
+    component: LayoutComponent,
+    loadChildren: () => import('./pages/pages.module').then(m => m.PagesModule)
   },
-  {
-    path: 'pages/examen', component: ExamenComponent, children: [
-      { path: 'nuevo', component: ExamenEdicionComponent },
-      { path: 'edicion/:id', component: ExamenEdicionComponent }      
-    ]
-  },
-  {
-    path: 'pages/especialidad', component: EspecialidadComponent, children: [
-      { path: 'nuevo', component: EspecialidadEdicionComponent },
-      { path: 'edicion/:id', component: EspecialidadEdicionComponent }      
-    ]
-  },
-  { path: 'pages/medico', component: MedicoComponent },
-  { path: 'pages/consulta', component: ConsultaComponent },
-  { path: 'pages/consulta-especial', component: ConsultaEspecialComponent },
-  { path: 'pages/consulta-wizard', component: ConsultaWizardComponent },
-  { path: 'pages/buscar', component: BuscarComponent },
-  { path: 'pages/reporte', component: ReporteComponent }
+  { path: 'not-404', component: Not404Component },
+  { path: '**', redirectTo: 'not-404'}
+
 ];
 
 @NgModule({

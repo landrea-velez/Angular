@@ -31,9 +31,9 @@ export class ConsultaService {
   listarExamenPorConsulta(idConsulta: number) {
     return this.http.get<ConsultaListaExamenDTO[]>(`${environment.HOST}/consultaexamenes/${idConsulta}`);
     //[{consulta, examen},
-	  //{consulta, examen},
-	  //{consulta, examen}
-   // ]
+    //{consulta, examen},
+    //{consulta, examen}
+    // ]
   }
 
   listarResumen() {

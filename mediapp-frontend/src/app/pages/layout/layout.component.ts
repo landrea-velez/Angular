@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Menu } from 'src/app/_model/menu';
+import { LoginService } from 'src/app/_service/login.service';
+import { MenuService } from 'src/app/_service/menu.service';
 
 @Component({
   selector: 'app-layout',
@@ -7,9 +10,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LayoutComponent implements OnInit {
 
-  constructor() { }
+  menus: Menu[];
+
+  constructor(
+    private menuService: MenuService,
+    private loginService: LoginService
+  ) { }
 
   ngOnInit(): void {
+    this.menuService.getMenuCambio().subscribe(data => {
+      this.menus = data;
+    });
+  }
+
+  cerrarSesion(){
+    this.loginService.cerrarSesion();
   }
 
 }
