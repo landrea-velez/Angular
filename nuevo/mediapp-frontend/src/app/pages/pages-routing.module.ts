@@ -1,3 +1,4 @@
+import { PerfilComponent } from './perfil/perfil.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { GuardService } from '../_service/guard.service';
@@ -18,6 +19,7 @@ import { ReporteComponent } from './reporte/reporte.component';
 
 export const routes: Routes = [
     { path: 'inicio', component: InicioComponent, canActivate: [GuardService] },
+    { path: 'perfil', component: PerfilComponent, canActivate: [GuardService] },
     {
         path: 'paciente', component: PacienteComponent, children: [
             { path: 'nuevo', component: PacienteEdicionComponent },

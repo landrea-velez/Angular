@@ -25,6 +25,7 @@ import { InicioComponent } from './inicio/inicio.component';
 import { Not403Component } from './not403/not403.component';
 import { Not404Component } from './not404/not404.component';
 import { TokenComponent } from './login/recuperar/token/token.component';
+import { PerfilComponent } from './perfil/perfil.component';
 
 
 @NgModule({
@@ -58,7 +59,8 @@ import { TokenComponent } from './login/recuperar/token/token.component';
         InicioComponent,
         Not403Component,
         Not404Component,
-        TokenComponent
+        TokenComponent,
+        PerfilComponent
     ],
     providers: [],
 })
