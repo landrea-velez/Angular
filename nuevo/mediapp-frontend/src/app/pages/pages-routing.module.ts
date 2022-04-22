@@ -1,3 +1,4 @@
+import { SignosComponent } from './signos/signos.component';
 import { PerfilComponent } from './perfil/perfil.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -16,10 +17,17 @@ import { Not403Component } from './not403/not403.component';
 import { PacienteEdicionComponent } from './paciente/paciente-edicion/paciente-edicion.component';
 import { PacienteComponent } from './paciente/paciente.component';
 import { ReporteComponent } from './reporte/reporte.component';
+import { SignosEdicionComponent } from './signos/signos-edicion/signos-edicion.component';
 
 export const routes: Routes = [
     { path: 'inicio', component: InicioComponent, canActivate: [GuardService] },
     { path: 'perfil', component: PerfilComponent, canActivate: [GuardService] },
+    {
+        path: 'signos', component: SignosComponent, children: [
+            { path: 'nuevo', component: SignosEdicionComponent },
+            { path: 'signos/:id', component: SignosEdicionComponent }
+        ], canActivate: [GuardService]
+    },
     {
         path: 'paciente', component: PacienteComponent, children: [
             { path: 'nuevo', component: PacienteEdicionComponent },
