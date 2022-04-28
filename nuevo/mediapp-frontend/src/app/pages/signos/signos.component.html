@@ -1,40 +1,67 @@
-<mat-toolbar>Registro de signos vitales del paciente</mat-toolbar>
+<router-outlet></router-outlet>
 
-<form class="example-container" [formGroup]="form" (ngSubmit)="aceptar()">
+<div class="example-header">
     <mat-form-field>
-        <input type="text" placeholder="Paciente" matInput [matAutocomplete]="autoPaciente"
-            [formControl]="myControlPaciente" formControlName="paciente">
-
-        <mat-autocomplete #autoPaciente="matAutocomplete" [displayWith]="mostrarPaciente">
-            <mat-option *ngFor="let p of pacientesFiltrados$ | async" [value]="p">
-                {{ p.nombres }} {{p.apellidos}}
-            </mat-option>
-        </mat-autocomplete>
+        <input matInput (keyup)="filtrar($event)" placeholder="Buscar paciente">
     </mat-form-field>
+</div>
 
+<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
-    <mat-form-field>
-        <input matInput [matDatepicker]="picker" placeholder="Escoge una fecha" [max]="maxFecha" formControlName="fecha"
-            [(ngModel)]="fechaSeleccionada">
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
+    <ng-container matColumnDef="idSignos">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+        <td mat-cell *matCellDef="let element"> {{element.idSignos}} </td>
+    </ng-container>
 
+    <ng-container matColumnDef="idPaciente">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>ID Paciente </th>
+        <td mat-cell *matCellDef="let element"> {{element.paciente.idPaciente}} </td>
+    </ng-container>
 
-    <mat-form-field>
-        <input matInput placeholder="Temperatura" [(ngModel)]="temperatura" formControlName="temperatura">
-    </mat-form-field>
-    <mat-form-field>
-        <textarea matInput placeholder="Pulso" [(ngModel)]="pulso" formControlName="pulso"></textarea>
-    </mat-form-field>
-    <mat-form-field>
-        <input matInput placeholder="Ritmo" [(ngModel)]="ritmo" formControlName="ritmo">
-    </mat-form-field>
+    <ng-container matColumnDef="nombres">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombres </th>
+        <td mat-cell *matCellDef="let element"> {{element.paciente.nombres}} </td>
+    </ng-container>
 
+    <ng-container matColumnDef="apellidos">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Apellidos </th>
+        <td mat-cell *matCellDef="let element"> {{element.paciente.apellidos}} </td>
+    </ng-container>
 
+    <ng-container matColumnDef="temperatura">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Temperatura </th>
+        <td mat-cell *matCellDef="let element"> {{element.temperatura}} </td>
+    </ng-container>
 
-    <button mat-raised-button color="primary" type="submit" >Registrar</button>
+    <ng-container matColumnDef="pulso">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Pulso </th>
+        <td mat-cell *matCellDef="let element"> {{element.pulso}} </td>
+    </ng-container>
 
+    <ng-container matColumnDef="ritmo">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Ritmo cardiaco </th>
+        <td mat-cell *matCellDef="let element"> {{element.ritmo}} </td>
+    </ng-container>
 
+    <ng-container matColumnDef="acciones">
+        <th mat-header-cell *matHeaderCellDef> Acciones </th>
+        <td mat-cell *matCellDef="let element">
+            <button mat-button color="primary"  [routerLink]="['edicion', element.idSignos]"> 
+                <mat-icon>ballot</mat-icon>
+            </button>
+            <button mat-button color="primary" (click)="eliminar(element.idSignos)">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </td>
+    </ng-container>
 
-</form>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+</table>
+
+<mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]" [length]="cantidad" (page)="mostrarMas($event)"></mat-paginator>
+
+<button mat-fab color="accent" style="float: right" routerLink="/pages/signos/nuevo" >
+    <mat-icon>add</mat-icon>
+</button>

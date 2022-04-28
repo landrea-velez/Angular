@@ -25,7 +25,7 @@ export const routes: Routes = [
     {
         path: 'signos', component: SignosComponent, children: [
             { path: 'nuevo', component: SignosEdicionComponent },
-            { path: 'signos/:id', component: SignosEdicionComponent }
+            { path: 'edicion/:id', component: SignosEdicionComponent }
         ], canActivate: [GuardService]
     },
     {

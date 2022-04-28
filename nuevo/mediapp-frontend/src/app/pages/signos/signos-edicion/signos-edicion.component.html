@@ -1,1 +1,41 @@
-<p>signos-edicion works!</p>
+<mat-toolbar>Registro de signos vitales del paciente</mat-toolbar>
+
+<form class="example-container" [formGroup]="form"  #frmSignos="ngForm" (ngSubmit)="operar()">
+    <mat-form-field>
+        <input type="text" placeholder="Paciente" matInput [matAutocomplete]="autoPaciente"
+            [formControl]="myControlPaciente" formControlName="paciente">
+
+        <mat-autocomplete #autoPaciente="matAutocomplete" [displayWith]="mostrarPaciente">
+            <mat-option *ngFor="let p of pacientesFiltrados$ | async" [value]="p">
+                {{ p.nombres }} {{p.apellidos}}
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput [matDatepicker]="picker" placeholder="Escoge una fecha" [max]="maxFecha" formControlName="fecha"
+            [(ngModel)]="fechaSeleccionada">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput placeholder="Temperatura" [(ngModel)]="temperatura" formControlName="temperatura">
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput placeholder="Pulso" [(ngModel)]="pulso" formControlName="pulso">
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput placeholder="Ritmo" [(ngModel)]="ritmo" formControlName="ritmo">
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit" [disabled]="frmSignos.invalid">
+        <mat-icon>done</mat-icon>
+        <span>Aceptar</span>
+    </button>
+    <button mat-raised-button color="accent" routerLink='/pages/signos' type="button">
+        <mat-icon>close</mat-icon>
+        <span>Cancelar</span>
+    </button>
+
+</form>

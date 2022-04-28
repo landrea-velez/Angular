@@ -1,12 +1,10 @@
-import { SignosService } from './../../_service/signos.service';
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { map, Observable } from 'rxjs';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { Signos } from 'src/app/_model/signos';
-import { Paciente } from 'src/app/_model/paciente';
-import { PacienteService } from 'src/app/_service/paciente.service';
-import * as moment from 'moment';
+import { SignosService } from './../../_service/signos.service';
 
 @Component({
   selector: 'app-signos',
@@ -15,89 +13,55 @@ import * as moment from 'moment';
 })
 export class SignosComponent implements OnInit {
 
-  form: FormGroup;
-  pacientes: Paciente[];
-  temperatura: string;
-  pulso: string;
-  ritmo: string;
-  mensaje: string;
+  dataSource: MatTableDataSource<Signos>;
+  displayedColumns: string[] = ['idSignos', 'idPaciente', 'nombres', 'apellidos', 'temperatura', 'pulso', 'ritmo', 'acciones'];
+  cantidad: number = 0;
 
-  //utiles para el autocomplete
-  myControlPaciente: FormControl = new FormControl();
-  pacientesFiltrados$: Observable<Paciente[]>;
-  fechaSeleccionada: Date = new Date();
-  maxFecha: Date = new Date();
-  pacienteSeleccionado: Paciente;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(
     private signosService: SignosService,
-    private pacienteService: PacienteService,
     private snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
-    this.form = new FormGroup({
-      'paciente': this.myControlPaciente,    
-      'fecha': new FormControl(new Date()),
-      'temperatura':  new FormControl(''),
-      'pulso':  new FormControl(''),
-      'ritmo':  new FormControl('')
+
+    this.signosService.getSignosCambio().subscribe(data => {
+      this.dataSource = new MatTableDataSource(data);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    });
+
+    this.signosService.getMensajeCambio().subscribe(data => {
+      this.snackBar.open(data, 'AVISO', { duration: 2000 });
+    });
+
+    this.signosService.listarPageable(0, 10).subscribe(data => {
+      this.cantidad = data.totalElements;
+      this.dataSource = new MatTableDataSource(data.content);
+    });
+
+  }
+
+  filtrar(e: any) {
+    this.dataSource.filter = e.target.value.trim().toLowerCase();
+  }
+
+  eliminar(id: number){
+    this.signosService.eliminar(id).subscribe(() => {
+      this.signosService.listar().subscribe(data => {
+        this.signosService.setSignosCambio(data);
+        this.signosService.setMensajeCambio('SE ELIMINO');
+      });
+    });
+  }
+
+  mostrarMas(e: any){
+    this.signosService.listarPageable(e.pageIndex, e.pageSize).subscribe(data => {
+      this.cantidad = data.totalElements;
+      this.dataSource = new MatTableDataSource(data.content);
+    });
+  }
   
-    });
-
-    this.listarInicial();
-
-    this.pacientesFiltrados$ = this.myControlPaciente.valueChanges.pipe(map(val => this.filtrarPacientes(val)));
-  }
-
-  filtrarPacientes(val: any) {
-    if (val != null && val.idPaciente > 0) {
-      return this.pacientes.filter(el =>
-        el.nombres.toLowerCase().includes(val.nombres.toLowerCase()) || el.apellidos.toLowerCase().includes(val.apellidos.toLowerCase()) || el.dni.includes(val.dni)
-      );
-    }
-    return this.pacientes.filter(el =>
-      el.nombres.toLowerCase().includes(val?.toLowerCase()) || el.apellidos.toLowerCase().includes(val?.toLowerCase()) || el.dni.includes(val)
-    );
-  }
-
-  mostrarPaciente(val: any) {
-    return val ? `${val.nombres} ${val.apellidos}` : val;
-  }
-
-  listarInicial() {
-    this.pacienteService.listar().subscribe(data => {
-      this.pacientes = data;
-    });
-  }
-
-  aceptar() {
-    let signos = new Signos();
-    signos.paciente = this.form.value['paciente'];
-    signos.fecha = moment(this.form.value['fecha']).format('YYYY-MM-DDTHH:mm:ss');
-    signos.temperatura = this.form.value['temperatura'];
-    signos.pulso = this.form.value['pulso'];
-    signos.ritmo = this.form.value['ritmo'];
-
-    this.signosService.registrarTransaccion(signos).subscribe(() => {
-      this.snackBar.open("Se registró", "Aviso", { duration: 2000 });
-
-      setTimeout(() => {
-        this.limpiarControles();
-      }, 2000)
-
-    });
-  }
-
-  limpiarControles() {
-    this.pacienteSeleccionado = null;   
-    this.fechaSeleccionada = new Date();
-    this.fechaSeleccionada.setHours(0);
-    this.fechaSeleccionada.setMinutes(0);
-    this.fechaSeleccionada.setSeconds(0);
-    this.fechaSeleccionada.setMilliseconds(0);
-    this.mensaje = '';    
-    //para autocompletes
-    this.myControlPaciente.reset();
-  }
 }
