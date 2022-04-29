@@ -1,6 +1,11 @@
 <mat-toolbar>Registro de signos vitales del paciente</mat-toolbar>
 
 <form class="example-container" [formGroup]="form"  #frmSignos="ngForm" (ngSubmit)="operar()">
+    <div [hidden]="true">
+        <mat-form-field class="example-full-width">
+            <input matInput placeholder="ID" required formControlName="id">
+        </mat-form-field>
+    </div>
     <mat-form-field>
         <input type="text" placeholder="Paciente" matInput [matAutocomplete]="autoPaciente"
             [formControl]="myControlPaciente" formControlName="paciente">

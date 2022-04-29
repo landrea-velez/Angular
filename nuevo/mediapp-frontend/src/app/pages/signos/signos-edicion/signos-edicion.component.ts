@@ -1,7 +1,6 @@
 import { SignosService } from './../../../_service/signos.service';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { map, Observable } from 'rxjs';
 import { Signos } from 'src/app/_model/signos';
 import { Paciente } from 'src/app/_model/paciente';
@@ -18,6 +17,8 @@ import * as moment from 'moment';
 })
 export class SignosEdicionComponent implements OnInit {
 
+  id: number = 0;
+  edicion: boolean = false;
   form: FormGroup;
   pacientes: Paciente[];
   temperatura: string;
@@ -36,7 +37,7 @@ export class SignosEdicionComponent implements OnInit {
     private signosService: SignosService,
     private pacienteService: PacienteService,
     private router: Router,
-    private snackBar: MatSnackBar
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
@@ -45,13 +46,33 @@ export class SignosEdicionComponent implements OnInit {
       'fecha': new FormControl(new Date()),
       'temperatura':  new FormControl(''),
       'pulso':  new FormControl(''),
-      'ritmo':  new FormControl('')
-  
+      'ritmo':  new FormControl('')  
     });
 
     this.listarInicial();
 
     this.pacientesFiltrados$ = this.myControlPaciente.valueChanges.pipe(map(val => this.filtrarPacientes(val)));
+
+    this.route.params.subscribe(data => {
+      this.id = data['id'];
+      this.edicion = data['id'] != null;      
+      this.initForm();
+    });
+  }
+
+  initForm() {
+    if (this.edicion) {
+      this.signosService.listarPorId(this.id).subscribe(data => {
+        this.form = new FormGroup({
+          'id': new FormControl(data.idSignos),
+          'paciente': new FormControl(data.paciente),
+          'fecha': new FormControl(data.fecha),
+          'temperatura': new FormControl(data.temperatura),
+          'pulso': new FormControl(data.pulso),
+          'ritmo': new FormControl(data.ritmo)
+        });
+      });
+    }
   }
 
   filtrarPacientes(val: any) {
@@ -75,22 +96,40 @@ export class SignosEdicionComponent implements OnInit {
     });
   }
 
-  operar() {
+  operar() {    
     let signos = new Signos();
+    signos.idSignos = this.form.value['id'];
     signos.paciente = this.form.value['paciente'];
     signos.fecha = moment(this.form.value['fecha']).format('YYYY-MM-DDTHH:mm:ss');
     signos.temperatura = this.form.value['temperatura'];
     signos.pulso = this.form.value['pulso'];
     signos.ritmo = this.form.value['ritmo'];
 
-    this.signosService.registrarTransaccion(signos).subscribe(() => {
-      this.snackBar.open("Se registró", "Aviso", { duration: 2000 });
-
-      setTimeout(() => {
-        this.limpiarControles();
-      }, 2000)
-
-    });
+    if (this.edicion) {
+      this.signosService.actualizarTransaccion(signos).subscribe(() => {
+        this.signosService.listar().subscribe(data => {
+          this.signosService.setSignosCambio(data);
+          this.signosService.setMensajeCambio('SE MODIFICO');
+        });
+  
+        setTimeout(() => {
+          this.limpiarControles();
+        }, 1000)
+  
+      });
+    } else {
+      this.signosService.registrarTransaccion(signos).subscribe(() => {
+        this.signosService.listar().subscribe(data => {
+          this.signosService.setSignosCambio(data);
+          this.signosService.setMensajeCambio('SE REGISTRO');
+        });
+  
+        setTimeout(() => {
+          this.limpiarControles();
+        }, 1000)
+  
+      });
+    }    
   }
 
   limpiarControles() {

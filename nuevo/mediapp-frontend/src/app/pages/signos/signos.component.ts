@@ -44,10 +44,6 @@ export class SignosComponent implements OnInit {
 
   }
 
-  filtrar(e: any) {
-    this.dataSource.filter = e.target.value.trim().toLowerCase();
-  }
-
   eliminar(id: number){
     this.signosService.eliminar(id).subscribe(() => {
       this.signosService.listar().subscribe(data => {

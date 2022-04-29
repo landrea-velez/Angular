@@ -27,6 +27,9 @@ export class SignosService extends GenericService<Signos> {
     return this.http.post(this.url, signos);
   }
 
+  actualizarTransaccion(signos: Signos) {
+    return this.http.put(this.url, signos);
+  }
 
   //////get & set ////
   getSignosCambio(){
